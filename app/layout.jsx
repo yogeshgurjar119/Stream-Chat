@@ -9,8 +9,8 @@ export default function RootLayout({ children }) {
   const pathname = usePathname()
   const showHeader = !(pathname?.startsWith('/dashboard') || pathname?.startsWith('/room'))
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" suppressHydrationWarning>
+      <body suppressHydrationWarning>
         <SocketProvider>
           <Toaster position="top-center" />
           {showHeader ? (

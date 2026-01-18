@@ -7,10 +7,11 @@ import toast from "react-hot-toast";
 class PeerService{
   constructor() {
     this.peer = null;
-    this.initPeer();
   }
   
-  initPeer() {
+  ensurePeer() {
+    if (this.peer) return this.peer;
+    if (typeof RTCPeerConnection === "undefined") return null;
     this.peer = new RTCPeerConnection({
       iceServers: [
         {
@@ -21,48 +22,44 @@ class PeerService{
         },
       ],
     });
+    return this.peer;
   }
   
   recreatePeer() {
+    if (typeof RTCPeerConnection === "undefined") return null;
     const previousPeer = this.peer;
     try {
       if (previousPeer) previousPeer.close();
     } catch {}
-    this.initPeer();
-    return this.peer;
+    this.peer = null;
+    return this.ensurePeer();
   }
   
   async getOffer(){
-    if (!this.peer) {
-      this.initPeer();
-    }
-    const offer = await this.peer.createOffer();
-    await this.peer.setLocalDescription(new RTCSessionDescription(offer));
+    const currentPeer = this.ensurePeer();
+    if (!currentPeer) throw new Error("WebRTC is not available");
+    const offer = await currentPeer.createOffer();
+    await currentPeer.setLocalDescription(offer);
     return offer;
   }
   
   async getAnswer(offer) {
-    if (!this.peer) {
-      this.initPeer();
-    }
-    await this.peer.setRemoteDescription(offer);
-    const ans = await this.peer.createAnswer();
-    await this.peer.setLocalDescription(new RTCSessionDescription(ans));
+    const currentPeer = this.ensurePeer();
+    if (!currentPeer) throw new Error("WebRTC is not available");
+    await currentPeer.setRemoteDescription(offer);
+    const ans = await currentPeer.createAnswer();
+    await currentPeer.setLocalDescription(ans);
     return ans;
   }
   
   async setRemoteDescription(ans) {
-    if (!this.peer) {
-      this.initPeer();
-    }
-    await this.peer.setRemoteDescription(new RTCSessionDescription(ans));
+    const currentPeer = this.ensurePeer();
+    if (!currentPeer) throw new Error("WebRTC is not available");
+    await currentPeer.setRemoteDescription(ans);
   }
   
   getPeer() {
-    if (!this.peer) {
-      this.initPeer();
-    }
-    return this.peer;
+    return this.ensurePeer();
   }
 }
 const peer = new PeerService();
@@ -85,6 +82,10 @@ export default function RoomPage({ roomId }) {
 
   const addTracksToPeer = useCallback((stream) => {
     const currentPeer = peer.getPeer();
+    if (!currentPeer) {
+      toast.error("WebRTC is not available");
+      return;
+    }
     const existingTrackIds = new Set(
       currentPeer.getSenders().map(sender => sender.track?.id)
     );
@@ -106,6 +107,10 @@ export default function RoomPage({ roomId }) {
   }, []);
 
   const handleCallUser = useCallback(async () => {
+    if (!peer.getPeer()) {
+      toast.error("WebRTC is not available");
+      return;
+    }
     let stream;
     try {
       stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
@@ -137,6 +142,10 @@ export default function RoomPage({ roomId }) {
 
   const acceptIncomingCall = useCallback(async () => {
     if (!incomingCall) return;
+    if (!peer.getPeer()) {
+      toast.error("WebRTC is not available");
+      return;
+    }
     let stream;
     try {
       stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
@@ -170,6 +179,10 @@ export default function RoomPage({ roomId }) {
   // Send Streams function - explicitly triggers renegotiation when tracks are added
   const sendStreams = useCallback(async () => {
     if (myStream) {
+      if (!peer.getPeer()) {
+        toast.error("WebRTC is not available");
+        return;
+      }
       try {
         addTracksToPeer(myStream);
         
@@ -212,20 +225,32 @@ export default function RoomPage({ roomId }) {
   );
 
   const handleNegoNeeded = useCallback(async () => {
-    const offer = await peer.getOffer();
-    socket.emit("peer:nego:needed", { offer, to: remoteSocketId });
+    try {
+      const offer = await peer.getOffer();
+      socket.emit("peer:nego:needed", { offer, to: remoteSocketId });
+    } catch (e) {
+      toast.error("Failed to negotiate");
+    }
   }, [remoteSocketId, socket]);
 
   const handleNegoNeedIncomming = useCallback(
     async ({ from, offer }) => {
-      const ans = await peer.getAnswer(offer);
-      socket.emit("peer:nego:done", { to: from, ans });
+      try {
+        const ans = await peer.getAnswer(offer);
+        socket.emit("peer:nego:done", { to: from, ans });
+      } catch (e) {
+        toast.error("Failed to negotiate");
+      }
     },
     [socket]
   );
 
   const handleNegoNeedFinal = useCallback(async ({ ans }) => {
-    await peer.setRemoteDescription(ans);
+    try {
+      await peer.setRemoteDescription(ans);
+    } catch (e) {
+      toast.error("Failed to negotiate");
+    }
   }, []);
 
   useEffect(() => {
@@ -234,6 +259,7 @@ export default function RoomPage({ roomId }) {
       setRemoteStream(remoteStream[0]);
     };
     const currentPeer = peer.getPeer();
+    if (!currentPeer) return;
     currentPeer.addEventListener("track", trackHandler);
     return () => { currentPeer.removeEventListener("track", trackHandler); };
   }, [peerVersion]);
@@ -241,6 +267,7 @@ export default function RoomPage({ roomId }) {
   // Handle ICE candidates
   useEffect(() => {
     const currentPeer = peer.getPeer();
+    if (!currentPeer) return;
     
     const handleIceCandidate = (event) => {
       if (event.candidate) {
@@ -261,7 +288,8 @@ export default function RoomPage({ roomId }) {
   const handleIceCandidate = useCallback(async ({ candidate }) => {
     try {
       const currentPeer = peer.getPeer();
-      await currentPeer.addIceCandidate(new RTCIceCandidate(candidate));
+      if (!currentPeer) return;
+      await currentPeer.addIceCandidate(candidate);
     } catch (error) {
       console.error("Error adding ICE candidate:", error);
     }

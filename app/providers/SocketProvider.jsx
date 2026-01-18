@@ -2,7 +2,9 @@
 import { createContext, useContext } from 'react'
 import { io } from 'socket.io-client'
 
-const socket = io('', { path: '/api/socket' })
+const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL ?? ''
+const socketPath = process.env.NEXT_PUBLIC_SOCKET_PATH ?? '/api/socket'
+const socket = io(socketUrl, { path: socketPath })
 const SocketContext = createContext(socket)
 
 export const useSocket = () => useContext(SocketContext)
