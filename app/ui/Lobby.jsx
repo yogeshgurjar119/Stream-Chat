@@ -180,13 +180,13 @@ export default function LobbyScreen() {
       const roomId = (room ?? "").trim();
       if (!roomId) return;
       toast((t) => (
-        <div className="panel" style={{ padding: 12 }}>
-          <div style={{ fontSize: 14, marginBottom: 10 }}>
+        <div className="rounded-xl border border-slate-700/30 bg-slate-950/90 p-3 text-slate-200">
+          <div className="mb-2 text-sm">
             Chat invite from <strong>{from ?? "Someone"}</strong>
           </div>
-          <div className="buttonRow" style={{ marginTop: 0 }}>
+          <div className="flex flex-wrap gap-3">
             <button
-              className="buttonPrimary"
+              className="rounded-xl border border-indigo-400/40 bg-gradient-to-b from-indigo-500 to-indigo-600 px-4 py-2 text-sm font-medium text-white"
               type="button"
               onClick={() => {
                 toast.dismiss(t.id);
@@ -200,7 +200,7 @@ export default function LobbyScreen() {
             >
               Join
             </button>
-            <button className="buttonSecondary" type="button" onClick={() => toast.dismiss(t.id)}>
+            <button className="rounded-xl border border-slate-700/40 bg-slate-900/40 px-4 py-2 text-sm text-slate-200" type="button" onClick={() => toast.dismiss(t.id)}>
               Ignore
             </button>
           </div>
@@ -211,13 +211,13 @@ export default function LobbyScreen() {
       const roomId = (room ?? "").trim();
       if (!roomId) return;
       toast((t) => (
-        <div className="panel" style={{ padding: 12 }}>
-          <div style={{ fontSize: 14, marginBottom: 10 }}>
+        <div className="rounded-xl border border-slate-700/30 bg-slate-950/90 p-3 text-slate-200">
+          <div className="mb-2 text-sm">
             Video invite from <strong>{from ?? "Someone"}</strong>
           </div>
-          <div className="buttonRow" style={{ marginTop: 0 }}>
+          <div className="flex flex-wrap gap-3">
             <button
-              className="buttonPrimary"
+              className="rounded-xl border border-indigo-400/40 bg-gradient-to-b from-indigo-500 to-indigo-600 px-4 py-2 text-sm font-medium text-white"
               type="button"
               onClick={() => {
                 toast.dismiss(t.id);
@@ -226,7 +226,7 @@ export default function LobbyScreen() {
             >
               Join
             </button>
-            <button className="buttonSecondary" type="button" onClick={() => toast.dismiss(t.id)}>
+            <button className="rounded-xl border border-slate-700/40 bg-slate-900/40 px-4 py-2 text-sm text-slate-200" type="button" onClick={() => toast.dismiss(t.id)}>
               Ignore
             </button>
           </div>
@@ -477,54 +477,54 @@ export default function LobbyScreen() {
   }
 
   return (
-    <div className="lobbyPage">
-      <div ref={threeRef} className="lobbyCanvas" />
-      <div className="lobbyOverlay">
-        <div className="shellLayout">
-          <aside className="sideNav">
-            <p className="navTitle">Menu</p>
-            <div className="navButtons">
-              <button className={`navButton ${mainTab === "chat" ? "navButtonActive" : ""}`} onClick={() => setMainTab("chat")} type="button">Chat</button>
-              <button className={`navButton ${mainTab === "video" ? "navButtonActive" : ""}`} onClick={() => setMainTab("video")} type="button">Video</button>
+    <div className="relative min-h-screen w-full">
+      <div ref={threeRef} className="fixed inset-0 z-0" />
+      <div className="relative z-10">
+        <div className="relative mx-auto flex min-h-screen max-w-6xl flex-col gap-5 px-4 py-6 lg:flex-row">
+          <aside className="w-full rounded-2xl border border-slate-700/30 bg-slate-900/40 p-4 backdrop-blur lg:sticky lg:top-24 lg:w-64">
+            <p className="text-xs uppercase tracking-[0.2em] text-slate-300/60">Menu</p>
+            <div className="mt-3 flex gap-2">
+              <button className={`flex-1 rounded-xl border border-slate-700/40 bg-slate-900/60 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200/70 transition hover:border-indigo-400/40 hover:text-indigo-200 ${mainTab === "chat" ? "border-indigo-400/50 bg-indigo-500/15 text-indigo-100" : ""}`} onClick={() => setMainTab("chat")} type="button">Chat</button>
+              <button className={`flex-1 rounded-xl border border-slate-700/40 bg-slate-900/60 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200/70 transition hover:border-indigo-400/40 hover:text-indigo-200 ${mainTab === "video" ? "border-indigo-400/50 bg-indigo-500/15 text-indigo-100" : ""}`} onClick={() => setMainTab("video")} type="button">Video</button>
             </div>
-            <div className="panel" style={{ marginTop: 14 }}>
-              <div className="panelBody">
-                <div className="field">
-                  <label className="label" htmlFor="username">Username</label>
-                  <input className="input" type="text" id="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Enter your username" autoComplete="nickname" />
+            <div className="mt-4 rounded-2xl border border-slate-700/30 bg-slate-900/50 backdrop-blur">
+              <div className="p-4">
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-300/60" htmlFor="username">Username</label>
+                  <input className="rounded-xl border border-slate-700/40 bg-slate-950/50 px-3 py-2 text-sm text-slate-200 placeholder:text-slate-400/60 outline-none transition focus:border-indigo-400/60 focus:ring-4 focus:ring-indigo-500/10" type="text" id="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Enter your username" autoComplete="nickname" />
                 </div>
-                <div className="statusRow" style={{ marginTop: 10 }}>
-                  <span className={`badge ${connected ? "badgeOk" : "badgeWarn"}`}>Connection: {connected ? "Online" : "Offline"}</span>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <span className={`rounded-full border px-3 py-1 text-xs text-slate-200/80 ${connected ? "border-emerald-400/40 text-emerald-200" : "border-amber-400/40 text-amber-200"}`}>Connection: {connected ? "Online" : "Offline"}</span>
                 </div>
               </div>
             </div>
           </aside>
-          <main className="contentArea">
+          <main className="flex-1">
             {!normalizedName ? (
-              <div className="panel">
-                <div className="panelBody">
-                  <header className="lobbyHeader">
-                    <h1 className="lobbyTitle">Welcome</h1>
-                    <p className="lobbySubtitle">Enter a username to continue.</p>
+              <div className="rounded-2xl border border-slate-700/30 bg-slate-900/50 backdrop-blur">
+                <div className="p-4">
+                  <header className="mb-4">
+                    <h1 className="text-2xl font-semibold text-white">Welcome</h1>
+                    <p className="text-sm text-slate-200/70">Enter a username to continue.</p>
                   </header>
-                  <div className="field">
-                    <label className="label" htmlFor="username2">Username</label>
-                    <input id="username2" className="input" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Enter your username" />
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-300/60" htmlFor="username2">Username</label>
+                    <input id="username2" className="rounded-xl border border-slate-700/40 bg-slate-950/50 px-3 py-2 text-sm text-slate-200 placeholder:text-slate-400/60 outline-none transition focus:border-indigo-400/60 focus:ring-4 focus:ring-indigo-500/10" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Enter your username" />
                   </div>
-                  <div className="buttonRow">
-                    <button className="buttonPrimary" type="button" onClick={onUsernameSet} disabled={!username.trim()}>Continue</button>
+                  <div className="mt-4 flex flex-wrap gap-3">
+                    <button className="rounded-xl border border-indigo-400/40 bg-gradient-to-b from-indigo-500 to-indigo-600 px-4 py-2 text-sm font-medium text-white" type="button" onClick={onUsernameSet} disabled={!username.trim()}>Continue</button>
                   </div>
                 </div>
               </div>
             ) : mainTab === "chat" ? (
               <>
-                <header className="lobbyHeader">
-                  <h1 className="lobbyTitle">Chat</h1>
-                  <p className="lobbySubtitle">Active users or anonymous chat.</p>
+                <header className="mb-4">
+                  <h1 className="text-2xl font-semibold text-white">Chat</h1>
+                  <p className="text-sm text-slate-200/70">Active users or anonymous chat.</p>
                 </header>
-                <div className="segmentRow">
+                <div className="mb-4 flex flex-wrap gap-2">
                   <button
-                    className={`segmentButton ${chatTab === "active" ? "segmentButtonActive" : ""}`}
+                    className={`rounded-full border border-slate-700/40 bg-slate-900/40 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200/70 ${chatTab === "active" ? "border-indigo-400/50 bg-indigo-500/15 text-indigo-100" : ""}`}
                     type="button"
                     onClick={() => {
                       setAnonChatSearching(false);
@@ -541,7 +541,7 @@ export default function LobbyScreen() {
                     Active Users
                   </button>
                   <button
-                    className={`segmentButton ${chatTab === "anon" ? "segmentButtonActive" : ""}`}
+                    className={`rounded-full border border-slate-700/40 bg-slate-900/40 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200/70 ${chatTab === "anon" ? "border-indigo-400/50 bg-indigo-500/15 text-indigo-100" : ""}`}
                     type="button"
                     onClick={() => {
                       setAnonChatSearching(false);
@@ -555,70 +555,70 @@ export default function LobbyScreen() {
                     Anonymous
                   </button>
                 </div>
-                <div className="panel">
+                <div className="rounded-2xl border border-slate-700/30 bg-slate-900/50 backdrop-blur">
                   {chatTab === "active" ? (
-                    <div className="splitPane">
-                      <div className="listPane">
-                        <div className="listHeader">
-                          <h3 className="listTitle">Active Users</h3>
-                          <button className="buttonSecondary" type="button" onClick={() => socket.emit("users:list")}>Refresh</button>
+                    <div className="grid gap-4 p-4 lg:grid-cols-[260px_1fr]">
+                      <div className="rounded-2xl border border-slate-700/30 bg-slate-900/60 p-4">
+                        <div className="flex items-center justify-between">
+                          <h3 className="text-sm font-semibold text-white">Active Users</h3>
+                          <button className="rounded-xl border border-slate-700/40 bg-slate-900/40 px-3 py-2 text-xs text-slate-200" type="button" onClick={() => socket.emit("users:list")}>Refresh</button>
                         </div>
-                        <div className="userList">
+                        <div className="mt-3 grid max-h-[320px] gap-2 overflow-y-auto">
                           {otherUsers.length ? otherUsers.map((u) => (
-                            <button key={u} className={`userItem ${activeChatPeer === u ? "userItemActive" : ""}`} type="button" onClick={() => openDirectChat(u)}>{u}</button>
-                          )) : <div className="smallText">No active users yet.</div>}
+                            <button key={u} className={`rounded-xl border border-slate-700/40 bg-slate-950/40 px-3 py-2 text-left text-sm text-slate-200/80 transition hover:border-indigo-400/40 hover:text-indigo-200 ${activeChatPeer === u ? "border-indigo-400/50 bg-indigo-500/10 text-indigo-100" : ""}`} type="button" onClick={() => openDirectChat(u)}>{u}</button>
+                          )) : <div className="text-xs text-slate-200/60">No active users yet.</div>}
                         </div>
                       </div>
-                      <div className="chatPane">
-                        <div className="chatHeader">
-                          <h3 className="chatTitle">{activeChatPeer ? `Chat with ${activeChatPeer}` : "Select a user"}</h3>
-                          <span className="badge">{activeChatRoom ? "Ready" : "Idle"}</span>
+                      <div className="flex h-full flex-col rounded-2xl border border-slate-700/30 bg-slate-900/60">
+                        <div className="flex items-center justify-between border-b border-slate-700/30 px-4 py-3">
+                          <h3 className="text-sm font-semibold text-white">{activeChatPeer ? `Chat with ${activeChatPeer}` : "Select a user"}</h3>
+                          <span className="rounded-full border border-slate-700/40 px-3 py-1 text-xs text-slate-200/80">{activeChatRoom ? "Ready" : "Idle"}</span>
                         </div>
-                        <div className="chatMessages">
+                        <div className="flex-1 space-y-3 overflow-y-auto px-4 py-3">
                           {activeChatRoom ? (chatMessages.length ? chatMessages.map((m, idx) => (
-                            <div key={`${m.at ?? "x"}-${idx}`} className={`chatBubble ${m.fromId && m.fromId === myId ? "chatBubbleMe" : ""}`}>
-                              <div className="chatMeta">{m.fromId && m.fromId === myId ? "Me" : m.from}</div>
+                            <div key={`${m.at ?? "x"}-${idx}`} className={`max-w-[75%] rounded-2xl border border-slate-700/30 bg-slate-950/50 px-3 py-2 text-sm text-slate-200/80 ${m.fromId && m.fromId === myId ? "ml-auto border-indigo-400/30 bg-indigo-500/15 text-indigo-100" : ""}`}>
+                              <div className="mb-1 text-[11px] uppercase tracking-wide text-slate-300/60">{m.fromId && m.fromId === myId ? "Me" : m.from}</div>
                               <div>{m.message}</div>
                             </div>
-                          )) : <div className="smallText">Say hi</div>) : <div className="smallText">Pick someone from the left.</div>}
+                          )) : <div className="text-xs text-slate-200/60">Say hi</div>) : <div className="text-xs text-slate-200/60">Pick someone from the left.</div>}
                         </div>
-                        <form className="chatInputRow" onSubmit={sendChatMessage}>
-                          <input className="input" value={chatDraft} onChange={(e) => setChatDraft(e.target.value)} placeholder={activeChatRoom ? "Type a message..." : "Select a user to start"} disabled={!activeChatRoom} />
-                          <button className="buttonPrimary" type="submit" disabled={!activeChatRoom}>Send</button>
+                        <form className="flex gap-3 border-t border-slate-700/30 px-4 py-3" onSubmit={sendChatMessage}>
+                          <input className="flex-1 rounded-xl border border-slate-700/40 bg-slate-950/50 px-3 py-2 text-sm text-slate-200 placeholder:text-slate-400/60 outline-none transition focus:border-indigo-400/60 focus:ring-4 focus:ring-indigo-500/10 disabled:opacity-50" value={chatDraft} onChange={(e) => setChatDraft(e.target.value)} placeholder={activeChatRoom ? "Type a message..." : "Select a user to start"} disabled={!activeChatRoom} />
+                          <button className="rounded-xl border border-indigo-400/40 bg-gradient-to-b from-indigo-500 to-indigo-600 px-4 py-2 text-sm font-medium text-white" type="submit" disabled={!activeChatRoom}>Send</button>
                         </form>
                       </div>
                     </div>
                   ) : (
-                    <div className="panelBody">
-                      <div className="statusRow">
-                        <span className="badge">{activeChatRoom ? "Live" : "Idle"}</span>
-                        {activeChatRoom ? <span className="badge badgeOk">Users: {anonChatCount}</span> : null}
+                    <div className="p-4">
+                      <div className="flex flex-wrap gap-2">
+                        <span className="rounded-full border border-slate-700/40 px-3 py-1 text-xs text-slate-200/80">{activeChatRoom ? "Live" : "Idle"}</span>
+                        {activeChatRoom ? <span className="rounded-full border border-emerald-400/40 px-3 py-1 text-xs text-emerald-200">Users: {anonChatCount}</span> : null}
                       </div>
-                      <div className="buttonRow">
+                      <div className="mt-4 flex flex-wrap gap-3">
                         {!activeChatRoom ? (
-                          <button className="buttonPrimary" type="button" onClick={startAnonChat}>Join Anonymous Chat</button>
+                          <button className="rounded-xl border border-indigo-400/40 bg-gradient-to-b from-indigo-500 to-indigo-600 px-4 py-2 text-sm font-medium text-white" type="button" onClick={startAnonChat}>Join Anonymous Chat</button>
                         ) : (
-                          <button className="buttonSecondary" type="button" onClick={leaveAnonChat}>Leave</button>
+                          <button className="rounded-xl border border-slate-700/40 bg-slate-900/40 px-4 py-2 text-sm text-slate-200" type="button" onClick={leaveAnonChat}>Leave</button>
                         )}
                       </div>
                       {activeChatRoom ? (
-                        <div className="panel" style={{ marginTop: 14 }}>
-                          <div className="chatPane">
-                            <div className="chatHeader">
-                              <h3 className="chatTitle">Anonymous Chat</h3>
-                              <span className="badge badgeOk">Live</span>
+                        <div className="mt-4 rounded-2xl border border-slate-700/30 bg-slate-900/60">
+                          <div className="flex h-full flex-col rounded-2xl">
+                            <div className="flex items-center justify-between border-b border-slate-700/30 px-4 py-3">
+                              <h3 className="text-sm font-semibold text-white">Anonymous Chat</h3>
+                              <span className="rounded-full border border-emerald-400/40 px-3 py-1 text-xs text-emerald-200">Live</span>
                             </div>
-                            <div className="chatMessages">
+                            <div className="flex-1 space-y-3 overflow-y-auto px-4 py-3">
                               {chatMessages.length ? chatMessages.map((m, idx) => (
-                                <div key={`${m.at ?? "x"}-${idx}`} className={`chatBubble ${m.fromId && m.fromId === myId ? "chatBubbleMe" : ""}`}>
-                                  <div className="chatMeta">{m.fromId && m.fromId === myId ? "Me" : m.from}</div>
+                                <div key={`${m.at ?? "x"}-${idx}`} className={`max-w-[75%] rounded-2xl border border-slate-700/30 bg-slate-950/50 px-3 py-2 text-sm text-slate-200/80 ${m.fromId && m.fromId === myId ? "ml-auto border-indigo-400/30 bg-indigo-500/15 text-indigo-100" : ""}`}>
+                                  <div className="mb-1 text-[11px] uppercase tracking-wide text-slate-300/60">{m.fromId && m.fromId === myId ? "Me" : m.from}</div>
                                   <div>{m.message}</div>
                                 </div>
-                              )) : <div className="smallText">Say hi</div>}
+                              )) : <div className="text-xs text-slate-200/60">Say hi</div>}
                             </div>
-                            <form className="chatInputRow" onSubmit={sendChatMessage}>
-                              <input className="input" value={chatDraft} onChange={(e) => setChatDraft(e.target.value)} placeholder="Type a message..." />
-                              <button className="buttonPrimary" type="submit">Send</button>
+                            <form className="flex gap-3 border-t border-slate-700/30 px-4 py-3" onSubmit={sendChatMessage}>
+                              <input className="flex-1 rounded-xl border border-slate-700/40 bg-slate-950/50 px-3 py-2 text-sm text-slate-200 placeholder:text-slate-400/60 outline-none transition focus:border-indigo-400/60 focus:ring-4 focus:ring-indigo-500/10" value={chatDraft} onChange={(e) => setChatDraft(e.target.value)} placeholder="Type a message..." />
+                              <button className="rounded-xl border border-indigo-400/40 bg-gradient-to-b from-indigo-500 to-indigo-600 px-4 py-2 text-sm font-medium text-white" type="submit">Send</button>
                             </form>
                           </div>
                         </div>
@@ -629,73 +629,73 @@ export default function LobbyScreen() {
               </>
             ) : (
               <>
-                <header className="lobbyHeader">
-                  <h1 className="lobbyTitle">Video</h1>
-                  <p className="lobbySubtitle">Join a room or match anonymously.</p>
+                <header className="mb-4">
+                  <h1 className="text-2xl font-semibold text-white">Video</h1>
+                  <p className="text-sm text-slate-200/70">Join a room or match anonymously.</p>
                 </header>
-                <div className="segmentRow">
-                  <button className={`segmentButton ${videoTab === "users" ? "segmentButtonActive" : ""}`} type="button" onClick={() => setVideoTab("users")}>Active Users</button>
-                  <button className={`segmentButton ${videoTab === "room" ? "segmentButtonActive" : ""}`} type="button" onClick={() => setVideoTab("room")}>Room</button>
-                  <button className={`segmentButton ${videoTab === "anon" ? "segmentButtonActive" : ""}`} type="button" onClick={() => setVideoTab("anon")}>Anonymous</button>
+                <div className="mb-4 flex flex-wrap gap-2">
+                  <button className={`rounded-full border border-slate-700/40 bg-slate-900/40 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200/70 ${videoTab === "users" ? "border-indigo-400/50 bg-indigo-500/15 text-indigo-100" : ""}`} type="button" onClick={() => setVideoTab("users")}>Active Users</button>
+                  <button className={`rounded-full border border-slate-700/40 bg-slate-900/40 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200/70 ${videoTab === "room" ? "border-indigo-400/50 bg-indigo-500/15 text-indigo-100" : ""}`} type="button" onClick={() => setVideoTab("room")}>Room</button>
+                  <button className={`rounded-full border border-slate-700/40 bg-slate-900/40 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200/70 ${videoTab === "anon" ? "border-indigo-400/50 bg-indigo-500/15 text-indigo-100" : ""}`} type="button" onClick={() => setVideoTab("anon")}>Anonymous</button>
                 </div>
-                <div className="panel">
+                <div className="rounded-2xl border border-slate-700/30 bg-slate-900/50 backdrop-blur">
                   {videoTab === "users" ? (
-                    <div className="splitPane">
-                      <div className="listPane">
-                        <div className="listHeader">
-                          <h3 className="listTitle">Active Users ({otherUsers.length})</h3>
-                          <button className="buttonSecondary" type="button" onClick={() => socket.emit("users:list")}>Refresh</button>
+                    <div className="grid gap-4 p-4 lg:grid-cols-[260px_1fr]">
+                      <div className="rounded-2xl border border-slate-700/30 bg-slate-900/60 p-4">
+                        <div className="flex items-center justify-between">
+                          <h3 className="text-sm font-semibold text-white">Active Users ({otherUsers.length})</h3>
+                          <button className="rounded-xl border border-slate-700/40 bg-slate-900/40 px-3 py-2 text-xs text-slate-200" type="button" onClick={() => socket.emit("users:list")}>Refresh</button>
                         </div>
-                        <div className="userList">
+                        <div className="mt-3 grid max-h-[320px] gap-2 overflow-y-auto">
                           {otherUsers.length ? otherUsers.map((u) => (
-                            <button key={u} className="userItem" type="button" onClick={() => inviteToVideo(u)}>{u}</button>
-                          )) : <div className="smallText">No active users yet.</div>}
+                            <button key={u} className="rounded-xl border border-slate-700/40 bg-slate-950/40 px-3 py-2 text-left text-sm text-slate-200/80 transition hover:border-indigo-400/40 hover:text-indigo-200" type="button" onClick={() => inviteToVideo(u)}>{u}</button>
+                          )) : <div className="text-xs text-slate-200/60">No active users yet.</div>}
                         </div>
                       </div>
-                      <div className="chatPane">
-                        <div className="chatHeader">
-                          <h3 className="chatTitle">Start a call</h3>
-                          <span className="badge">{connected ? "Online" : "Offline"}</span>
+                      <div className="flex h-full flex-col rounded-2xl border border-slate-700/30 bg-slate-900/60">
+                        <div className="flex items-center justify-between border-b border-slate-700/30 px-4 py-3">
+                          <h3 className="text-sm font-semibold text-white">Start a call</h3>
+                          <span className="rounded-full border border-slate-700/40 px-3 py-1 text-xs text-slate-200/80">{connected ? "Online" : "Offline"}</span>
                         </div>
-                        <div className="chatMessages">
-                          <div className="smallText">Click a user on the left to send an invite and create a private video room.</div>
-                          <div className="smallText" style={{ marginTop: 10 }}>If you receive an invite, use the Join button in the popup.</div>
+                        <div className="flex-1 space-y-3 overflow-y-auto px-4 py-3">
+                          <div className="text-xs text-slate-200/60">Click a user on the left to send an invite and create a private video room.</div>
+                          <div className="text-xs text-slate-200/60">If you receive an invite, use the Join button in the popup.</div>
                         </div>
-                        <div className="chatInputRow">
-                          <input className="input" disabled value="Invites create a unique room automatically." />
-                          <button className="buttonSecondary" type="button" onClick={() => socket.emit("users:list")}>Refresh</button>
+                        <div className="flex gap-3 border-t border-slate-700/30 px-4 py-3">
+                          <input className="flex-1 rounded-xl border border-slate-700/40 bg-slate-950/50 px-3 py-2 text-sm text-slate-200/60" disabled value="Invites create a unique room automatically." />
+                          <button className="rounded-xl border border-slate-700/40 bg-slate-900/40 px-3 py-2 text-xs text-slate-200" type="button" onClick={() => socket.emit("users:list")}>Refresh</button>
                         </div>
                       </div>
                     </div>
                   ) : videoTab === "room" ? (
-                    <div className="panelBody">
-                      <div className="listHeader">
-                        <h3 className="listTitle">Available Rooms ({roomsList.length})</h3>
-                        <button className="buttonSecondary" type="button" onClick={() => socket.emit("rooms:list")}>Refresh</button>
+                    <div className="p-4">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-sm font-semibold text-white">Available Rooms ({roomsList.length})</h3>
+                        <button className="rounded-xl border border-slate-700/40 bg-slate-900/40 px-3 py-2 text-xs text-slate-200" type="button" onClick={() => socket.emit("rooms:list")}>Refresh</button>
                       </div>
-                      <div className="userList" style={{ marginBottom: 14 }}>
+                      <div className="mt-3 grid max-h-[320px] gap-2 overflow-y-auto">
                         {roomsList.length ? roomsList.map((rid) => (
-                          <button key={rid} className="userItem" type="button" onClick={() => router.push(`/room/${rid}`)}>{rid}</button>
-                        )) : <div className="smallText">No rooms created yet.</div>}
+                          <button key={rid} className="rounded-xl border border-slate-700/40 bg-slate-950/40 px-3 py-2 text-left text-sm text-slate-200/80 transition hover:border-indigo-400/40 hover:text-indigo-200" type="button" onClick={() => router.push(`/room/${rid}`)}>{rid}</button>
+                        )) : <div className="text-xs text-slate-200/60">No rooms created yet.</div>}
                       </div>
-                      <form className="form" onSubmit={joinVideoRoom}>
-                        <div className="field">
-                          <label className="label" htmlFor="room">Room ID</label>
-                          <input className="input" type="text" id="room" name="room" value={room} onChange={(e) => setRoom(e.target.value)} placeholder="Enter room id" autoComplete="off" />
+                      <form className="mt-4 grid gap-3" onSubmit={joinVideoRoom}>
+                        <div className="flex flex-col gap-2">
+                          <label className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-300/60" htmlFor="room">Room ID</label>
+                          <input className="rounded-xl border border-slate-700/40 bg-slate-950/50 px-3 py-2 text-sm text-slate-200 placeholder:text-slate-400/60 outline-none transition focus:border-indigo-400/60 focus:ring-4 focus:ring-indigo-500/10" type="text" id="room" name="room" value={room} onChange={(e) => setRoom(e.target.value)} placeholder="Enter room id" autoComplete="off" />
                         </div>
-                        <button className="buttonPrimary" type="submit">Join Video Room</button>
+                        <button className="rounded-xl border border-indigo-400/40 bg-gradient-to-b from-indigo-500 to-indigo-600 px-4 py-2 text-sm font-medium text-white" type="submit">Join Video Room</button>
                       </form>
                     </div>
                   ) : (
-                    <div className="panelBody">
-                      <div className="statusRow">
-                        <span className="badge">{anonVideoSearching ? "Searching..." : "Idle"}</span>
+                    <div className="p-4">
+                      <div className="flex flex-wrap gap-2">
+                        <span className="rounded-full border border-slate-700/40 px-3 py-1 text-xs text-slate-200/80">{anonVideoSearching ? "Searching..." : "Idle"}</span>
                       </div>
-                      <div className="buttonRow">
-                        <button className="buttonPrimary" type="button" onClick={startAnonVideo} disabled={anonVideoSearching}>{anonVideoSearching ? "Searching..." : "Find Partner"}</button>
-                        <button className="buttonSecondary" type="button" onClick={leaveAnonVideo} disabled={!anonVideoSearching}>Cancel</button>
+                      <div className="mt-4 flex flex-wrap gap-3">
+                        <button className="rounded-xl border border-indigo-400/40 bg-gradient-to-b from-indigo-500 to-indigo-600 px-4 py-2 text-sm font-medium text-white" type="button" onClick={startAnonVideo} disabled={anonVideoSearching}>{anonVideoSearching ? "Searching..." : "Find Partner"}</button>
+                        <button className="rounded-xl border border-slate-700/40 bg-slate-900/40 px-4 py-2 text-sm text-slate-200" type="button" onClick={leaveAnonVideo} disabled={!anonVideoSearching}>Cancel</button>
                       </div>
-                      <div className="smallText" style={{ marginTop: 10 }}>When matched, you will be redirected automatically.</div>
+                      <div className="mt-3 text-xs text-slate-200/60">When matched, you will be redirected automatically.</div>
                     </div>
                   )}
                 </div>

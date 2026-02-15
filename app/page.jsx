@@ -183,23 +183,23 @@ export default function HomePage() {
   ]
 
   return (
-    <div className="homePage">
+    <div className="relative min-h-screen w-full overflow-x-hidden">
       {/* Three.js Background */}
-      <div ref={threeRef} className="homeCanvas" />
+      <div ref={threeRef} className="fixed inset-0 z-0" />
       
       {/* Content Overlay */}
-      <div className="homeOverlay">
+      <div className="relative z-10">
         {/* Hero Section */}
-        <section className="heroSection">
-          <div className="heroContent">
-            <h1 className="heroTitle">Welcome to My Website</h1>
-            <p className="heroSubtitle">Explore my work and technologies</p>
+        <section className="flex min-h-screen items-center justify-center px-5 text-center">
+          <div className="max-w-3xl">
+            <h1 className="relative inline-block text-4xl font-semibold leading-tight text-white motion-reduce:animate-none md:text-5xl animate-hero-glow">Welcome to My Website</h1>
+            <p className="mt-3 text-lg text-slate-200/80 md:text-xl">Explore my work and technologies</p>
           </div>
         </section>
         
         {/* Scroll Section with Technologies */}
-        <section ref={scrollRef} className="techScrollSection">
-          <div className="techContainer">
+        <section ref={scrollRef} className="relative flex min-h-[200vh] items-center justify-center">
+          <div className="relative w-full max-w-6xl px-5">
             {technologies.map((tech, index) => {
               const translateY = (index * 200) - (scrollY * 0.5)
               const opacity = Math.max(0, Math.min(1, 1 - Math.abs(translateY - 200) / 300))
@@ -207,14 +207,14 @@ export default function HomePage() {
               return (
                 <div 
                   key={tech.name} 
-                  className="techItem"
+                  className="absolute left-1/2 -translate-x-1/2 text-center transition-opacity duration-300"
                   style={{
                     transform: `translateY(${translateY}px)`,
                     opacity,
                     color: tech.color
                   }}
                 >
-                  <h2 className="techName">{tech.name}</h2>
+                  <h2 className="text-4xl font-bold [text-shadow:0_4px_12px_rgba(0,0,0,0.3)] md:text-7xl">{tech.name}</h2>
                 </div>
               )
             })}
@@ -222,10 +222,10 @@ export default function HomePage() {
         </section>
         
         {/* End Section */}
-        <section className="endSection">
-          <div className="endContent">
-            <h2>Ready to explore more?</h2>
-            <p>Check out the Stream Dashboard or other features</p>
+        <section className="flex min-h-screen items-center justify-center px-5 text-center">
+          <div className="max-w-3xl">
+            <h2 className="text-2xl text-white md:text-4xl">Ready to explore more?</h2>
+            <p className="mt-3 text-base text-slate-200/80 md:text-lg">Check out the Stream Dashboard or other features</p>
           </div>
         </section>
       </div>

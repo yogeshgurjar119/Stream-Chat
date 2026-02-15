@@ -398,29 +398,29 @@ export default function StreamInterface() {
   );
   
   return (
-    <div className="streamInterface">
+    <div className="w-full max-w-6xl mx-auto">
       {/* Username setup */}
       {!normalizedName ? (
-        <div className="panel">
-          <div className="panelBody">
-            <header className="lobbyHeader">
-              <h1 className="lobbyTitle">Welcome</h1>
-              <p className="lobbySubtitle">Enter a username to access chat and video features.</p>
+        <div className="bg-slate-800/50 border border-slate-700/30 rounded-2xl p-8 backdrop-blur-lg">
+          <div className="text-center">
+            <header className="mb-8">
+              <h1 className="text-3xl font-bold text-white mb-2">Welcome</h1>
+              <p className="text-slate-400">Enter a username to access chat and video features.</p>
             </header>
-            <form className="form" onSubmit={onUsernameSubmit}>
-              <div className="field">
-                <label className="label" htmlFor="username">Username</label>
+            <form className="space-y-6 max-w-md mx-auto" onSubmit={onUsernameSubmit}>
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-slate-300" htmlFor="username">Username</label>
                 <input 
                   id="username" 
-                  className="input" 
+                  className="w-full px-4 py-3 bg-slate-700/30 border border-slate-600/50 rounded-xl text-white placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
                   value={username} 
                   onChange={(e) => setUsername(e.target.value)} 
                   placeholder="Enter your username" 
                 />
               </div>
-              <div className="buttonRow">
+              <div className="flex justify-center">
                 <button 
-                  className="buttonPrimary" 
+                  className="px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-medium rounded-xl hover:from-indigo-600 hover:to-purple-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed" 
                   type="submit" 
                   disabled={!username.trim()}
                 >
@@ -431,18 +431,18 @@ export default function StreamInterface() {
           </div>
         </div>
       ) : (
-        <div className="streamContent">
+        <div className="space-y-6">
           {/* Main tabs: Chat / Video */}
-          <div className="segmentRow" style={{ marginBottom: 16 }}>
+          <div className="flex gap-2 p-1 bg-slate-800/50 rounded-xl border border-slate-700/30 mb-6">
             <button 
-              className={`segmentButton ${mainTab === "chat" ? "segmentButtonActive" : ""}`} 
+              className={`px-6 py-3 rounded-lg text-sm font-medium transition-all ${mainTab === "chat" ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg" : "text-slate-400 hover:text-white"}`} 
               type="button" 
               onClick={() => setMainTab("chat")}
             >
               Chat
             </button>
             <button 
-              className={`segmentButton ${mainTab === "video" ? "segmentButtonActive" : ""}`} 
+              className={`px-6 py-3 rounded-lg text-sm font-medium transition-all ${mainTab === "video" ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg" : "text-slate-400 hover:text-white"}`} 
               type="button" 
               onClick={() => setMainTab("video")}
             >
@@ -452,12 +452,12 @@ export default function StreamInterface() {
           
           {/* Chat Section */}
           {mainTab === "chat" && (
-            <div className="panel">
+            <div className="bg-slate-800/50 border border-slate-700/30 rounded-2xl p-6 backdrop-blur-lg">
               {/* Chat tabs: Active Users / Anonymous */}
-              <div className="panelBody" style={{ paddingBottom: 8 }}>
-                <div className="segmentRow" style={{ margin: 0 }}>
+              <div className="pb-4">
+                <div className="flex gap-2 p-1 bg-slate-700/30 rounded-lg mb-4">
                   <button 
-                    className={`segmentButton ${chatTab === "active" ? "segmentButtonActive" : ""}`} 
+                    className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${chatTab === "active" ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white" : "text-slate-400 hover:text-white"}`} 
                     type="button" 
                     onClick={() => {
                       setAnonChatSearching(false);
@@ -474,7 +474,7 @@ export default function StreamInterface() {
                     Active Users
                   </button>
                   <button 
-                    className={`segmentButton ${chatTab === "anon" ? "segmentButtonActive" : ""}`} 
+                    className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${chatTab === "anon" ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white" : "text-slate-400 hover:text-white"}`} 
                     type="button" 
                     onClick={() => {
                       setAnonChatSearching(false);
@@ -492,137 +492,206 @@ export default function StreamInterface() {
               
               {/* Chat content */}
               {chatTab === "active" ? (
-                <div className="splitPane" style={{ minHeight: 400 }}>
+                <div className="flex gap-6 min-h-[400px]">
                   {/* User list */}
-                  <div className="listPane">
-                    <div className="listHeader">
-                      <h3 className="listTitle">Active Users</h3>
+                  <div className="w-1/3 bg-slate-700/30 rounded-xl p-4">
+                    <div className="mb-4 flex items-center justify-between">
+                      <h3 className="text-lg font-semibold text-white">Active Users</h3>
                       <button 
-                        className="buttonSecondary" 
+                        className="px-3 py-1 bg-slate-600/50 text-slate-300 text-sm rounded-lg hover:bg-slate-600/70 transition-all" 
                         type="button" 
                         onClick={() => socket.emit("users:list")}
                       >
                         Refresh
                       </button>
                     </div>
-                    <div className="userList">
-                      {otherUsers.length ? otherUsers.map((u) => (
-                        <button 
-                          key={u} 
-                          className={`userItem ${activeChatPeer === u ? "userItemActive" : ""}`} 
-                          type="button" 
-                          onClick={() => openDirectChat(u)}
-                        >
-                          {u}
-                        </button>
-                      )) : <div className="smallText">No active users yet.</div>}
+                    <div className="space-y-2">
+                      {otherUsers.length === 0 ? (
+                        <div className="text-center py-8 text-slate-400">
+                          <p className="text-sm">No other users online</p>
+                        </div>
+                      ) : (
+                        <ul className="space-y-1">
+                          {otherUsers.map((user) => (
+                            <li key={user} className={`bg-slate-600/20 rounded-lg p-3 hover:bg-slate-600/40 transition-all ${activeChatPeer === user ? "ring-2 ring-indigo-500" : ""}`}>
+                              <button
+                                className="w-full flex items-center justify-between text-left"
+                                type="button"
+                                onClick={() => openDirectChat(user)}
+                              >
+                                <span className="text-sm text-white font-medium truncate">{user}</span>
+                                <span className="text-xs bg-indigo-500/20 text-indigo-300 px-2 py-1 rounded-md">Chat</span>
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </div>
                   </div>
                   
                   {/* Chat messages */}
-                  <div className="chatPane">
-                    <div className="chatHeader">
-                      <h3 className="chatTitle">
-                        {activeChatPeer ? `Chat with ${activeChatPeer}` : "Select a user"}
+                  <div className="flex-1 bg-slate-800/30 rounded-xl p-4 flex flex-col">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-lg font-semibold text-white">
+                        {activeChatPeer ? `Chat with ${activeChatPeer}` : "Select a user to chat"}
                       </h3>
-                      <span className="badge">{activeChatRoom ? "Ready" : "Idle"}</span>
-                    </div>
-                    <div className="chatMessages">
-                      {activeChatRoom ? (
-                        chatMessages.length ? (
-                          chatMessages.map((m, idx) => (
-                            <div 
-                              key={`${m.at ?? "x"}-${idx}`} 
-                              className={`chatBubble ${m.fromId && m.fromId === myId ? "chatBubbleMe" : ""}`}
-                            >
-                              <div className="chatMeta">
-                                {m.fromId && m.fromId === myId ? "Me" : m.from}
-                              </div>
-                              <div>{m.message}</div>
-                            </div>
-                          ))
-                        ) : (
-                          <div className="smallText">Say hi</div>
-                        )
-                      ) : (
-                        <div className="smallText">Pick someone from the left.</div>
+                      {activeChatPeer && (
+                        <button
+                          className="px-3 py-1 bg-slate-600/50 text-slate-300 text-sm rounded-lg hover:bg-slate-600/70 transition-all"
+                          type="button"
+                          onClick={() => {
+                            setActiveChatRoom(null);
+                            setActiveChatPeer(null);
+                            setChatMessages([]);
+                            setChatDraft("");
+                          }}
+                        >
+                          Close
+                        </button>
                       )}
                     </div>
-                    <form className="chatInputRow" onSubmit={sendChatMessage}>
-                      <input 
-                        className="input" 
-                        value={chatDraft} 
-                        onChange={(e) => setChatDraft(e.target.value)} 
-                        placeholder={activeChatRoom ? "Type a message..." : "Select a user to start"} 
-                        disabled={!activeChatRoom} 
-                      />
-                      <button 
-                        className="buttonPrimary" 
-                        type="submit" 
-                        disabled={!activeChatRoom}
-                      >
-                        Send
-                      </button>
-                    </form>
+                    <div className="flex-1 overflow-y-auto mb-4">
+                      {chatMessages.length === 0 ? (
+                        <div className="text-center py-12 text-slate-400">
+                          <p className="text-sm">
+                            {activeChatPeer
+                              ? "Send a message to start chatting"
+                              : "Select a user from the list to start chatting"}
+                          </p>
+                        </div>
+                      ) : (
+                        <ul className="space-y-3">
+                          {chatMessages.map((message, index) => (
+                            <li
+                              key={index}
+                              className={`flex ${message.fromId && message.fromId === myId ? "justify-end" : "justify-start"}`}
+                            >
+                              <div className={`max-w-[75%] rounded-2xl px-4 py-3 ${
+                                message.fromId && message.fromId === myId 
+                                  ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white" 
+                                  : "bg-slate-700/60 text-slate-200"
+                              }`}>
+                                <p className="text-sm mb-1">{message.message}</p>
+                                <span className="text-xs opacity-70">
+                                  {new Date(message.at).toLocaleTimeString()}
+                                </span>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                    {activeChatPeer && (
+                      <div className="mt-auto">
+                        <form className="flex gap-2" onSubmit={sendChatMessage}>
+                          <input
+                            className="flex-1 px-4 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                            type="text"
+                            placeholder="Type a message..."
+                            value={chatDraft}
+                            onChange={(e) => setChatDraft(e.target.value)}
+                          />
+                          <button className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-lg hover:from-indigo-600 hover:to-purple-600 transition-all" type="submit">
+                            Send
+                          </button>
+                        </form>
+                      </div>
+                    )}
                   </div>
                 </div>
               ) : (
-                <div className="panelBody">
-                  <div className="statusRow">
-                    <span className="badge">
-                      {activeChatRoom ? "Live" : "Idle"}
-                    </span>
-                    {activeChatRoom ? <span className="badge badgeOk">Users: {anonChatCount}</span> : null}
-                  </div>
-                  <div className="buttonRow">
-                    {!activeChatRoom ? (
-                      <button 
-                        className="buttonPrimary" 
-                        type="button" 
-                        onClick={startAnonChat}
+                <div className="space-y-6">
+                  {anonChatSearching ? (
+                    <div className="text-center py-12">
+                      <div className="inline-flex h-8 w-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+                      <p className="text-slate-300 mb-4">Searching for anonymous chat partner...</p>
+                      <button
+                        className="px-4 py-2 bg-slate-600/50 text-slate-300 rounded-lg hover:bg-slate-600/70 transition-all"
+                        type="button"
+                        onClick={() => {
+                          setAnonChatSearching(false);
+                          socket.emit("anon:chat:cancel");
+                        }}
                       >
-                        Join Anonymous Chat
+                        Cancel
                       </button>
-                    ) : (
-                      <button 
-                        className="buttonSecondary" 
-                        type="button" 
-                        onClick={leaveAnonChat}
-                      >
-                        Leave
-                      </button>
-                    )}
-                  </div>
-                  {activeChatRoom && (
-                    <div className="panel" style={{ marginTop: 14 }}>
-                      <div className="chatPane">
-                        <div className="chatHeader">
-                          <h3 className="chatTitle">Anonymous Chat</h3>
-                          <span className="badge badgeOk">Live</span>
-                        </div>
-                        <div className="chatMessages">
-                          {chatMessages.length ? chatMessages.map((m, idx) => (
-                            <div 
-                              key={`${m.at ?? "x"}-${idx}`} 
-                              className={`chatBubble ${m.fromId && m.fromId === myId ? "chatBubbleMe" : ""}`}
-                            >
-                              <div className="chatMeta">
-                                {m.fromId && m.fromId === myId ? "Me" : m.from}
-                              </div>
-                              <div>{m.message}</div>
-                            </div>
-                          )) : <div className="smallText">Say hi</div>}
-                        </div>
-                        <form className="chatInputRow" onSubmit={sendChatMessage}>
-                          <input 
-                            className="input" 
-                            value={chatDraft} 
-                            onChange={(e) => setChatDraft(e.target.value)} 
-                            placeholder="Type a message..." 
-                          />
-                          <button className="buttonPrimary" type="submit">Send</button>
-                        </form>
+                    </div>
+                  ) : activeChatRoom === ANON_PUBLIC_CHAT_ROOM ? (
+                    <div className="bg-slate-800/30 rounded-xl p-6">
+                      <div className="flex items-center justify-between mb-6">
+                        <h3 className="text-lg font-semibold text-white">Anonymous Chat</h3>
+                        <button
+                          className="px-3 py-1 bg-slate-600/50 text-slate-300 text-sm rounded-lg hover:bg-slate-600/70 transition-all"
+                          type="button"
+                          onClick={() => {
+                            setActiveChatRoom(null);
+                            setActiveChatPeer(null);
+                            setChatMessages([]);
+                            setChatDraft("");
+                            socket.emit("anon:chat:leave");
+                          }}
+                        >
+                          Leave
+                        </button>
                       </div>
+                      <div className="mb-6 h-64 overflow-y-auto">
+                        {chatMessages.length === 0 ? (
+                          <div className="text-center py-12 text-slate-400">
+                            <p className="text-sm">Connected to anonymous chat</p>
+                          </div>
+                        ) : (
+                          <ul className="space-y-3">
+                            {chatMessages.map((message, index) => (
+                              <li
+                                key={index}
+                                className={`flex ${message.fromId && message.fromId === myId ? "justify-end" : "justify-start"}`}
+                              >
+                                <div className={`max-w-[75%] rounded-2xl px-4 py-3 ${
+                                  message.fromId && message.fromId === myId 
+                                    ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white" 
+                                    : "bg-slate-700/60 text-slate-200"
+                                }`}>
+                                  <p className="text-sm mb-1">{message.message}</p>
+                                  <span className="text-xs opacity-70">
+                                    {new Date(message.at).toLocaleTimeString()}
+                                  </span>
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                      <form className="flex gap-2" onSubmit={sendChatMessage}>
+                        <input
+                          className="flex-1 px-4 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                          type="text"
+                          placeholder="Type a message..."
+                          value={chatDraft}
+                          onChange={(e) => setChatDraft(e.target.value)}
+                        />
+                        <button className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-lg hover:from-indigo-600 hover:to-purple-600 transition-all" type="submit">
+                          Send
+                        </button>
+                      </form>
+                    </div>
+                  ) : (
+                    <div className="text-center py-12">
+                      <div className="mb-6">
+                        <h3 className="text-xl font-semibold text-white mb-2">Anonymous Chat</h3>
+                        <p className="text-slate-400">
+                          Chat with random anonymous users. Your identity will be hidden.
+                        </p>
+                      </div>
+                      <button
+                        className="px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-medium rounded-xl hover:from-indigo-600 hover:to-purple-600 transition-all"
+                        type="button"
+                        onClick={() => {
+                          setAnonChatSearching(true);
+                          socket.emit("anon:chat:join");
+                        }}
+                      >
+                        Start Anonymous Chat
+                      </button>
                     </div>
                   )}
                 </div>
@@ -632,26 +701,26 @@ export default function StreamInterface() {
           
           {/* Video Section */}
           {mainTab === "video" && (
-            <div className="panel">
+            <div className="bg-slate-800/50 border border-slate-700/30 rounded-2xl p-6 backdrop-blur-lg">
               {/* Video tabs: Users / Room / Anonymous */}
-              <div className="panelBody" style={{ paddingBottom: 8 }}>
-                <div className="segmentRow" style={{ margin: 0 }}>
+              <div className="pb-4">
+                <div className="flex gap-2 p-1 bg-slate-700/30 rounded-lg mb-4">
                   <button 
-                    className={`segmentButton ${videoTab === "users" ? "segmentButtonActive" : ""}`} 
+                    className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${videoTab === "users" ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white" : "text-slate-400 hover:text-white"}`} 
                     type="button" 
                     onClick={() => setVideoTab("users")}
                   >
                     Active Users
                   </button>
                   <button 
-                    className={`segmentButton ${videoTab === "room" ? "segmentButtonActive" : ""}`} 
+                    className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${videoTab === "room" ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white" : "text-slate-400 hover:text-white"}`} 
                     type="button" 
                     onClick={() => setVideoTab("room")}
                   >
                     Join Room
                   </button>
                   <button 
-                    className={`segmentButton ${videoTab === "anon" ? "segmentButtonActive" : ""}`} 
+                    className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${videoTab === "anon" ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white" : "text-slate-400 hover:text-white"}`} 
                     type="button" 
                     onClick={() => setVideoTab("anon")}
                   >
@@ -662,106 +731,127 @@ export default function StreamInterface() {
               
               {/* Video content */}
               {videoTab === "users" ? (
-                <div className="splitPane" style={{ minHeight: 400 }}>
+                <div className="flex gap-6 min-h-[400px]">
                   {/* User list */}
-                  <div className="listPane">
-                    <div className="listHeader">
-                      <h3 className="listTitle">Active Users ({otherUsers.length})</h3>
+                  <div className="w-1/3 bg-slate-700/30 rounded-xl p-4">
+                    <div className="mb-4 flex items-center justify-between">
+                      <h3 className="text-lg font-semibold text-white">Active Users ({otherUsers.length})</h3>
                       <button 
-                        className="buttonSecondary" 
+                        className="px-3 py-1 bg-slate-600/50 text-slate-300 text-sm rounded-lg hover:bg-slate-600/70 transition-all" 
                         type="button" 
                         onClick={() => socket.emit("users:list")}
                       >
                         Refresh
                       </button>
                     </div>
-                    <div className="userList">
-                      {otherUsers.length ? otherUsers.map((u) => (
-                        <button 
-                          key={u} 
-                          className="userItem" 
-                          type="button" 
-                          onClick={() => inviteToVideo(u)}
-                        >
-                          {u}
-                        </button>
-                      )) : <div className="smallText">No active users yet.</div>}
+                    <div className="space-y-2">
+                      {otherUsers.length === 0 ? (
+                        <div className="text-center py-8 text-slate-400">
+                          <p className="text-sm">No active users yet</p>
+                        </div>
+                      ) : (
+                        <ul className="space-y-1">
+                          {otherUsers.map((user) => (
+                            <li key={user} className="bg-slate-600/20 rounded-lg p-3 hover:bg-slate-600/40 transition-all">
+                              <button
+                                className="w-full flex items-center justify-between text-left"
+                                type="button"
+                                onClick={() => inviteToVideo(user)}
+                              >
+                                <span className="text-sm text-white font-medium truncate">{user}</span>
+                                <span className="text-xs bg-indigo-500/20 text-indigo-300 px-2 py-1 rounded-md">Call</span>
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </div>
                   </div>
                   
                   {/* Video info */}
-                  <div className="chatPane">
-                    <div className="chatHeader">
-                      <h3 className="chatTitle">Start a call</h3>
-                      <span className="badge">{connected ? "Online" : "Offline"}</span>
+                  <div className="flex-1 bg-slate-800/30 rounded-xl p-4 flex flex-col">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-lg font-semibold text-white">Start a call</h3>
+                      <span className="text-xs bg-indigo-500/20 text-indigo-300 px-2 py-1 rounded-md">{connected ? "Online" : "Offline"}</span>
                     </div>
-                    <div className="chatMessages">
-                      <div className="smallText">Click a user on the left to send an invite and create a private video room.</div>
-                      <div className="smallText" style={{ marginTop: 10 }}>If you receive an invite, use the Join button in the popup.</div>
+                    <div className="flex-1 overflow-y-auto mb-4">
+                      <div className="text-slate-400 text-sm">
+                        <p className="mb-2">Click a user on the left to send an invite and create a private video room.</p>
+                        <p>If you receive an invite, use the Join button in the popup.</p>
+                      </div>
                     </div>
-                    <div className="chatInputRow">
-                      <input 
-                        className="input" 
-                        disabled 
-                        value="Invites create a unique room automatically."
-                      />
-                      <button 
-                        className="buttonSecondary" 
-                        type="button" 
-                        onClick={() => socket.emit("users:list")}
-                      >
-                        Refresh
-                      </button>
+                    <div className="mt-auto">
+                      <div className="flex gap-2">
+                        <input
+                          className="flex-1 px-4 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                          type="text"
+                          disabled
+                          value="Invites create a unique room automatically."
+                        />
+                        <button className="px-4 py-2 bg-slate-600/50 text-slate-300 rounded-lg hover:bg-slate-600/70 transition-all" type="button" onClick={() => socket.emit("users:list")}>
+                          Refresh
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               ) : videoTab === "room" ? (
-                <div className="panelBody">
-                  <form className="form" onSubmit={joinVideoRoom}>
-                    <div className="field">
-                      <label className="label" htmlFor="room">Room ID</label>
+                <div className="space-y-6">
+                  <form className="space-y-4" onSubmit={joinVideoRoom}>
+                    <div className="space-y-2">
+                      <label className="block text-sm font-medium text-slate-300" htmlFor="room">Room ID</label>
                       <input 
                         id="room" 
-                        className="input" 
+                        className="w-full px-4 py-2 bg-slate-700/30 border border-slate-600/50 rounded-xl text-white placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" 
                         value={room} 
                         onChange={(e) => setRoom(e.target.value)} 
                         placeholder="Enter room ID" 
                       />
                     </div>
-                    <div className="buttonRow">
-                      <button className="buttonPrimary" type="submit">Join Video Room</button>
+                    <div className="flex justify-center">
+                      <button className="px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-medium rounded-xl hover:from-indigo-600 hover:to-purple-600 transition-all" type="submit">Join Video Room</button>
                     </div>
                   </form>
-                  <div style={{ marginTop: 16 }}>
-                    <h3 className="listTitle" style={{ marginBottom: 8 }}>Available Rooms</h3>
-                    <div className="userList">
-                      {roomsList.length ? roomsList.map((roomId) => (
-                        <button 
-                          key={roomId} 
-                          className="userItem" 
-                          type="button" 
-                          onClick={() => {
-                            setRoom(roomId);
-                            router.push(`/room/${roomId}`);
-                          }}
-                        >
-                          {roomId}
-                        </button>
-                      )) : <div className="smallText">No active rooms yet.</div>}
+                  <div className="mt-6">
+                    <h3 className="text-lg font-semibold text-white mb-4">Available Rooms</h3>
+                    <div className="space-y-2">
+                      {roomsList.length === 0 ? (
+                        <div className="text-center py-8 text-slate-400">
+                          <p className="text-sm">No active rooms yet</p>
+                        </div>
+                      ) : (
+                        <ul className="space-y-1">
+                          {roomsList.map((roomId) => (
+                            <li key={roomId} className="bg-slate-600/20 rounded-lg p-3 hover:bg-slate-600/40 transition-all">
+                              <button
+                                className="w-full flex items-center justify-between text-left"
+                                type="button"
+                                onClick={() => {
+                                  setRoom(roomId);
+                                  router.push(`/room/${roomId}`);
+                                }}
+                              >
+                                <span className="text-sm text-white font-medium truncate">{roomId}</span>
+                                <span className="text-xs bg-indigo-500/20 text-indigo-300 px-2 py-1 rounded-md">Join</span>
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </div>
                   </div>
                 </div>
               ) : (
-                <div className="panelBody">
-                  <div className="statusRow">
-                    <span className="badge">
+                <div className="space-y-6">
+                  <div className="flex justify-center">
+                    <span className="text-xs bg-indigo-500/20 text-indigo-300 px-3 py-1 rounded-md">
                       {anonVideoSearching ? "Searching..." : "Idle"}
                     </span>
                   </div>
-                  <div className="buttonRow">
+                  <div className="flex justify-center gap-3">
                     {!anonVideoSearching ? (
                       <button 
-                        className="buttonPrimary" 
+                        className="px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-medium rounded-xl hover:from-indigo-600 hover:to-purple-600 transition-all" 
                         type="button" 
                         onClick={startAnonVideo}
                       >
@@ -769,7 +859,7 @@ export default function StreamInterface() {
                       </button>
                     ) : (
                       <button 
-                        className="buttonSecondary" 
+                        className="px-6 py-3 bg-slate-600/50 text-slate-300 rounded-xl hover:bg-slate-600/70 transition-all" 
                         type="button" 
                         onClick={leaveAnonVideo}
                       >
@@ -777,9 +867,9 @@ export default function StreamInterface() {
                       </button>
                     )}
                   </div>
-                  <div className="chatMessages" style={{ marginTop: 16 }}>
-                    <div className="smallText">Click the button above to start searching for an anonymous video chat partner.</div>
-                    <div className="smallText" style={{ marginTop: 10 }}>Once matched, you&apos;ll be redirected to a private video room.</div>
+                  <div className="text-center text-slate-400 text-sm">
+                    <p className="mb-2">Click the button above to start searching for an anonymous video chat partner.</p>
+                    <p>Once matched, you&apos;ll be redirected to a private video room.</p>
                   </div>
                 </div>
               )}
