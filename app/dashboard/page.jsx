@@ -3,8 +3,8 @@ import StreamInterface from '../ui/StreamInterface'
 
 export default function DashboardPage() {
   return (
-    <div className="w-full">
-      <div className="grid gap-4">
+    <div className="dashboard">
+      <div className="dashboard-content">
         <StreamInterface />
       </div>
     </div>

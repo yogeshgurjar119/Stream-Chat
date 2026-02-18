@@ -1,3 +1,219 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom Cursor Styles */
+.custom-cursor {
+  cursor: none;
+}
+
+.cursor-glow {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(99, 102, 241, 0.8);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transition: all 0.1s ease;
+  transform: translate(-50%, -50%);
+  backdrop-filter: blur(1px);
+}
+
+.cursor-glow.hover {
+  width: 40px;
+  height: 40px;
+  border-color: rgba(168, 85, 247, 0.9);
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.6);
+}
+
+.cursor-glow.drag {
+  width: 60px;
+  height: 60px;
+  border-color: rgba(34, 197, 94, 0.9);
+  background: radial-gradient(circle, rgba(34, 197, 94, 0.2) 0%, transparent 70%);
+  box-shadow: 0 0 30px rgba(34, 197, 94, 0.8);
+}
+
+/* Anti-Gravity Hover Effects */
+.anti-gravity {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.anti-gravity:hover {
+  transform: translateY(-10px) scale(1.02);
+  filter: drop-shadow(0 20px 30px rgba(99, 102, 241, 0.3));
+}
+
+/* HeroForge-style 3D Avatar Effects */
+.avatar-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+}
+
+.avatar-3d:hover {
+  transform: rotateY(15deg) rotateX(5deg);
+}
+
+/* Advanced Button Animations */
+.btn-advanced {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-advanced::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-advanced:hover::before {
+  left: 100%;
+}
+
+.btn-advanced::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(45deg, #6366f1, #a855f7, #6366f1);
+  border-radius: inherit;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s ease;
+}
+
+.btn-advanced:hover::after {
+  opacity: 1;
+}
+
+/* Technology Card Hover Effects */
+.tech-card-enhanced {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tech-card-enhanced::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tech-card-enhanced:hover::before {
+  opacity: 1;
+}
+
+.tech-card-enhanced:hover {
+  transform: translateY(-8px) rotateX(5deg);
+  box-shadow: 0 25px 50px rgba(99, 102, 241, 0.2);
+}
+
+/* Contact Form Enhancements */
+.form-input-enhanced {
+  transition: all 0.3s ease;
+  background: rgba(51, 65, 85, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.form-input-enhanced:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(99, 102, 241, 0.2);
+}
+
+/* Scroll Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+  }
+  50% { 
+    box-shadow: 0 0 40px rgba(99, 102, 241, 0.6);
+  }
+}
+
+.float-animation {
+  animation: float 6s ease-in-out infinite;
+}
+
+.pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* HeroForge Avatar Specific Styles */
+.avatar-container {
+  perspective: 1000px;
+}
+
+.avatar-part {
+  transition: transform 0.3s ease;
+}
+
+.avatar-part:hover {
+  transform: scale(1.05) rotateZ(2deg);
+}
+
+/* Drag and Drop Visual Feedback */
+.drag-active {
+  opacity: 0.8;
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 20px rgba(34, 197, 94, 0.8));
+}
+
+.drop-zone {
+  border: 2px dashed rgba(99, 102, 241, 0.5);
+  transition: all 0.3s ease;
+}
+
+.drop-zone.active {
+  border-color: rgba(34, 197, 94, 0.8);
+  background: rgba(34, 197, 94, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .cursor-glow {
+    display: none;
+  }
+  
+  .custom-cursor {
+    cursor: auto;
+  }
+}
+
+/* Dark Mode Optimizations */
+@media (prefers-color-scheme: dark) {
+  .cursor-glow {
+    border-color: rgba(168, 85, 247, 0.9);
+  }
+  
+  .cursor-glow.hover {
+    border-color: rgba(99, 102, 241, 1);
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .cursor-glow {
+    transition: none;
+  }
+}

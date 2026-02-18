@@ -342,44 +342,44 @@ export default function RoomPage({ roomId }) {
   }
 
   return (
-    <div className="min-h-screen w-full px-4 py-5">
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
+    <div className="roomPage">
+      <div className="roomTopBar">
         <div>
-          <h1 className="text-xl font-semibold tracking-wide text-white">Room {roomId}</h1>
-          <div className="mt-2 flex flex-wrap gap-2">
-            <span className={`rounded-full border px-3 py-1 text-xs font-medium ${connected ? "border-emerald-400/40 text-emerald-200" : "border-amber-400/40 text-amber-200"}`}>Connection: {connected ? "Online" : "Offline"}</span>
-            <span className={`rounded-full border px-3 py-1 text-xs font-medium ${remoteSocketId ? "border-emerald-400/40 text-emerald-200" : "border-amber-400/40 text-amber-200"}`}>Peer: {remoteSocketId ? "Connected" : "Waiting"}</span>
+          <h1 className="roomTitle">Room {roomId}</h1>
+          <div className="statusRow">
+            <span className={`badge ${connected ? "badgeOk" : "badgeWarn"}`}>Connection: {connected ? "Online" : "Offline"}</span>
+            <span className={`badge ${remoteSocketId ? "badgeOk" : "badgeWarn"}`}>Peer: {remoteSocketId ? "Connected" : "Waiting"}</span>
           </div>
         </div>
-        <div className="flex flex-wrap gap-3">
+        <div className="buttonRow">
           {incomingCall ? (
             <>
-              <button className="rounded-xl border border-indigo-400/40 bg-gradient-to-b from-indigo-500 to-indigo-600 px-4 py-2 text-sm font-medium text-white" onClick={acceptIncomingCall}>Accept</button>
-              <button className="rounded-xl border border-slate-700/40 bg-slate-900/40 px-4 py-2 text-sm text-slate-200" onClick={declineIncomingCall}>Decline</button>
+              <button className="buttonPrimary" onClick={acceptIncomingCall}>Accept</button>
+              <button className="buttonSecondary" onClick={declineIncomingCall}>Decline</button>
             </>
           ) : null}
-          {remoteSocketId && !incomingCall ? <button className="rounded-xl border border-indigo-400/40 bg-gradient-to-b from-indigo-500 to-indigo-600 px-4 py-2 text-sm font-medium text-white" onClick={handleCallUser}>Call</button> : null}
-          {myStream && <button className="rounded-xl border border-slate-700/40 bg-slate-900/40 px-4 py-2 text-sm text-slate-200" onClick={sendStreams}>Send Stream</button>}
-          <button className="rounded-xl border border-slate-700/40 bg-slate-900/40 px-4 py-2 text-sm text-slate-200" onClick={() => toast("Copy the room URL to invite someone")}>Invite</button>
+          {remoteSocketId && !incomingCall ? <button className="buttonPrimary" onClick={handleCallUser}>Call</button> : null}
+          {myStream && <button className="buttonSecondary" onClick={sendStreams}>Send Stream</button>}
+          <button className="buttonSecondary" onClick={() => toast("Copy the room URL to invite someone")}>Invite</button>
         </div>
       </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <div className="overflow-hidden rounded-2xl border border-slate-700/30 bg-slate-900/40 backdrop-blur">
-          <div className="flex items-center justify-between border-b border-slate-700/30 px-4 py-3">
-            <div className="text-xs text-slate-200/80">My Video</div>
-            <div className="rounded-full border border-slate-700/40 px-3 py-1 text-xs text-slate-200/80">{myStream ? "Ready" : "Not started"}</div>
+      <div className="videoGrid">
+        <div className="videoCard">
+          <div className="videoHeader">
+            <div className="videoLabel">My Video</div>
+            <div className="badge">{myStream ? "Ready" : "Not started"}</div>
           </div>
-          <div className="aspect-video w-full bg-black/35">
-            {myStream ? <ReactPlayer className="h-full w-full" playing muted url={myStream} /> : null}
+          <div className="videoFrame">
+            {myStream ? <ReactPlayer className="playerFill" playing muted url={myStream} /> : null}
           </div>
         </div>
-        <div className="overflow-hidden rounded-2xl border border-slate-700/30 bg-slate-900/40 backdrop-blur">
-          <div className="flex items-center justify-between border-b border-slate-700/30 px-4 py-3">
-            <div className="text-xs text-slate-200/80">Remote Video</div>
-            <div className="rounded-full border border-slate-700/40 px-3 py-1 text-xs text-slate-200/80">{remoteStream ? "Live" : "Waiting"}</div>
+        <div className="videoCard">
+          <div className="videoHeader">
+            <div className="videoLabel">Remote Video</div>
+            <div className="badge">{remoteStream ? "Live" : "Waiting"}</div>
           </div>
-          <div className="aspect-video w-full bg-black/35">
-            {remoteStream ? <ReactPlayer className="h-full w-full" playing muted url={remoteStream} /> : null}
+          <div className="videoFrame">
+            {remoteStream ? <ReactPlayer className="playerFill" playing muted url={remoteStream} /> : null}
           </div>
         </div>
       </div>
